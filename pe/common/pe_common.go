@@ -18,8 +18,15 @@ func (p ByteSlice) Less(i, j int) bool { return p[i] < p[j] }
 func (p ByteSlice) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
 func (p ByteSlice) Sort()              { sort.Sort(p) }
 
-func ToDigitsInts(i int64) []int {
-	digits_bytes := ByteSlice(strconv.FormatInt(int64(i), 10))
+type Digits []byte
+
+func ToDigitsInts(v int64) Digits {
+	digits := strconv.AppendInt(nil, v, 10)
+	for i, b := range digits {
+		digits[i] = b - '0'
+	}
+	return Digits(digits)
+	//digits_bytes := ByteSlice(strconv.FormatInt(int64(i), 10))
 	digits_ints := make([]int, digits_bytes.Len())
 	for index, digit_byte := range digits_bytes {
 		digits_ints[index] = int(digit_byte - '0')
