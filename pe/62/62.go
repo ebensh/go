@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sort"
 	"strconv"
+  "github.com/ebensh/pe/common"
 )
 
 func main() {
@@ -32,8 +33,8 @@ func generate_cube_hashes(max int, ch chan int64) {
 
 func hash_cube(n int64) int64 {
 	cubed := n * n * n
-	digits := ToDigits(cubed)
-	sort.Ints(digits)
+	digits := pecommon.ToDigitsBytes(cubed)
+	sort.Sort(sort.Reverse(pecommon.ByteSlice(digits)))
 	hash, _ := strconv.ParseInt(string(digits), 10, 0)
 	fmt.Println(n, hash)
 	return hash
